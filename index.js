@@ -43,7 +43,7 @@ async function run() {
         app.get('/products/:id', async (req, res) => {
             const id = parseFloat(req.params.id);
             const query = { categoryId: id }
-            const products = await productsCollection.find(query).toArray()
+            const products = await newProductsCollection.find(query).toArray()
             res.send(products)
         })
         //post buyer bookings
@@ -76,8 +76,8 @@ async function run() {
         app.get('/myProducts', async (req, res) => {
             const email = req.query.email;
             console.log(email)
-            const query = { sellerEmail:email }
-            const result = await newProductsCollection.find(query).toArray()
+            const query = { "products.sellerEmail": email}
+            const result = await productsCollection.find(query).toArray()
             res.send(result)
         })
     }
