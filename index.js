@@ -19,6 +19,7 @@ async function run() {
         const productsCollection = client.db('urbanCollection').collection('products')
         const bookingsCollection = client.db('urbanCollection').collection('bookings')
         const wishlistCollection = client.db('urbanCollection').collection('wishlist')
+        const newProductsCollection = client.db('urbanCollection').collection('newProducts')
         app.post('/adduser', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
@@ -69,6 +70,14 @@ async function run() {
             const email = req.query.email;
             const query = { buyersEmail: email }
             const result = await wishlistCollection.find(query).toArray()
+            res.send(result)
+        })
+        //get my products for seller 
+        app.get('/myProducts', async (req, res) => {
+            const email = req.query.email;
+            console.log(email)
+            const query = { sellerEmail:email }
+            const result = await newProductsCollection.find(query).toArray()
             res.send(result)
         })
     }
