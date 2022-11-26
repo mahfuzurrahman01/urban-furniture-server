@@ -18,6 +18,7 @@ async function run() {
         const usersCollection = client.db('urbanCollection').collection('users')
         const productsCollection = client.db('urbanCollection').collection('products')
         const bookingsCollection = client.db('urbanCollection').collection('bookings')
+        const wishlistCollection = client.db('urbanCollection').collection('wishlist')
         app.post('/adduser', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
@@ -57,6 +58,14 @@ async function run() {
             const result = await bookingsCollection.find(query).toArray()
             res.send(result)
         })
+        //add to wishlist 
+        app.post('/wishlist', async (req, res) => {
+            const product = req.body;
+            const result = await wishlistCollection.insertOne(product)
+            res.send(result)
+        })
+        // //get wishlist items
+        // app.get('/wishlist',async(req,res)=>)
     }
     finally {
 
