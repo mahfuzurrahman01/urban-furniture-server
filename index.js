@@ -64,8 +64,13 @@ async function run() {
             const result = await wishlistCollection.insertOne(product)
             res.send(result)
         })
-        // //get wishlist items
-        // app.get('/wishlist',async(req,res)=>)
+        //get wishlist items
+        app.get('/wishlist', async (req, res) => {
+            const email = req.query.email;
+            const query = { buyersEmail: email }
+            const result = await wishlistCollection.find(query).toArray()
+            res.send(result)
+        })
     }
     finally {
 
