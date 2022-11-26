@@ -75,9 +75,15 @@ async function run() {
         //get my products for seller 
         app.get('/myProducts', async (req, res) => {
             const email = req.query.email;
-            console.log(email)
-            const query = { "products.sellerEmail": email}
-            const result = await productsCollection.find(query).toArray()
+            const query = { sellerEmail: email }
+            const result = await newProductsCollection.find(query).toArray()
+            res.send(result)
+        })
+        //delete seller product
+        app.delete('/myProducts/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await newProductsCollection.deleteOne(query)
             res.send(result)
         })
     }
