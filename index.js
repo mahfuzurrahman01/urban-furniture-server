@@ -22,6 +22,7 @@ async function run() {
         const wishlistCollection = client.db('urbanCollection').collection('wishlist')
         const newProductsCollection = client.db('urbanCollection').collection('newProducts')
         const paymentsCollection = client.db('urbanCollection').collection('payment')
+        const advertiseCollection = client.db('urbanCollection').collection('advertise')
         app.post('/adduser', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
@@ -158,6 +159,12 @@ async function run() {
                 }
             }
             const updateProducts = await newProductsCollection.updateOne(filterTwo, updateDocTwo)
+            res.send(result)
+        })
+        //post advertise item on api
+        app.post('/advertise', async (req, res) => {
+            const product = req.body;
+            const result = await advertiseCollection.insertOne(product)
             res.send(result)
         })
     }
