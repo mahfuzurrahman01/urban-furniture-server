@@ -142,10 +142,9 @@ async function run() {
         //payment 
         app.post('/payments', async (req, res) => {
             const product = req.body;
-            const result = await paymentsCollection.insertOne(product)
+            // const result = await paymentsCollection.insertOne(product)
             const id = product.bookingId;
-            console.log(id)
-            console.log(id)
+
             const filter = { index: id }
             const updateDoc = {
                 $set: {
@@ -160,6 +159,8 @@ async function run() {
                 }
             }
             const updateProducts = await newProductsCollection.updateOne(filterTwo, updateDocTwo)
+            const query = { advertiseId: id }
+            const result = await advertiseCollection.deleteOne(query)
             res.send(result)
         })
         //post advertise item on api
@@ -175,7 +176,11 @@ async function run() {
             res.send({ added: 'added' })
 
         })
-        
+        app.get('/advertise', async (req, res) => {
+            const query = {}
+            const result = await advertiseCollection.find(query).toArray()
+            res.send(result)
+        })
     }
     finally {
 
