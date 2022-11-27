@@ -145,6 +145,7 @@ async function run() {
             const result = await paymentsCollection.insertOne(product)
             const id = product.bookingId;
             console.log(id)
+            console.log(id)
             const filter = { index: id }
             const updateDoc = {
                 $set: {
@@ -164,9 +165,17 @@ async function run() {
         //post advertise item on api
         app.post('/advertise', async (req, res) => {
             const product = req.body;
-            const result = await advertiseCollection.insertOne(product)
-            res.send(result)
+            const id = product.advertiseId;
+            const query = { advertiseId: id }
+            const item = await advertiseCollection.findOne(query)
+            if (!item) {
+                const result = await advertiseCollection.insertOne(product)
+                return res.send(result)
+            }
+            res.send({ added: 'added' })
+
         })
+        
     }
     finally {
 
