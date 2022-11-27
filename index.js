@@ -91,7 +91,33 @@ async function run() {
             const product = req.body;
             const result = await newProductsCollection.insertOne(product)
             res.send(result)
-            console.log(product)
+        })
+        //newproducts collection find
+        app.get('/newProducts', async (req, res) => {
+            const query = {}
+            const result = await newProductsCollection.find(query).toArray()
+            res.send(result)
+        })
+        //update product role
+        app.put('/newProducts/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: 'Sold'
+                },
+            };
+            const result = await newProductsCollection.updateOne(filter, updateDoc, options)
+            res.send(result)
+        })
+        //get a single product with id
+        app.get('/product/:id', async (req, res) => {
+            const id = req.params.id;
+           
+            const query = { _id: ObjectId(id) }
+            const result = await newProductsCollection.findOne(query);
+            res.send(result)
         })
     }
     finally {
