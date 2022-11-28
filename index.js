@@ -176,10 +176,23 @@ async function run() {
             res.send({ added: 'added' })
 
         })
+        //getting advertise item.
         app.get('/advertise', async (req, res) => {
             const query = {}
             const result = await advertiseCollection.find(query).toArray()
             res.send(result)
+        })
+        //getting buyers for admin
+        app.get('/allbuyers', async (req, res) => {
+            const query = { role: 'buyer' }
+            const buyers = await usersCollection.find(query).toArray()
+            res.send(buyers)
+        })
+        // getting all sellers
+        app.get('/allsellers', async (req, res) => {
+            const query = { role: 'seller' }
+            const sellers = await usersCollection.find(query).toArray()
+            res.send(sellers)
         })
     }
     finally {
