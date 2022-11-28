@@ -209,6 +209,17 @@ async function run() {
             const result = await usersCollection.deleteOne(queryOne)
             res.send(result)
         })
+        //delete sellers data 
+        app.delete('/seller', async (req, res) => {
+            const email = req.query.email;
+            const queryOne = { role: 'seller', email: email }
+            const queryTwo = { sellerEmail: email }
+            const resultTwo = await newProductsCollection.deleteMany(queryTwo)
+            const queryThree = { sellerEmail: email }
+            const resultThree = await advertiseCollection.deleteMany(queryThree)
+            const result = await usersCollection.deleteOne(queryOne)
+            res.send(result)
+        })
     }
     finally {
 
