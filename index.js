@@ -33,7 +33,11 @@ async function run() {
             const email = req.params.email;
             const query = { email: email }
             const user = await usersCollection.findOne(query)
-            res.send({ role: user.role })
+            console.log(user)
+            if (user?.role) {
+                return res.send({ role: user.role })
+            }
+            return res.send({ message: 'User Not found' })
 
         })
         //get products
@@ -193,6 +197,17 @@ async function run() {
             const query = { role: 'seller' }
             const sellers = await usersCollection.find(query).toArray()
             res.send(sellers)
+        })
+        //deletion from buyers 
+        app.delete('/buyer', async (req, res) => {
+            const email = req.query.email;
+            const queryOne = { role: 'buyer', email: email }
+            const queryTwo = { email: email }
+            const resultTwo = await bookingsCollection.deleteMany(queryTwo)
+            const queryThree = { buyersEmail: email }
+            const resultThree = await wishlistCollection.deleteMany(queryThree)
+            const result = await usersCollection.deleteOne(queryOne)
+            res.send(result)
         })
     }
     finally {
